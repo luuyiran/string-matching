@@ -12,6 +12,10 @@
 #include <string.h>
 #include <sys/param.h> 
 
+#ifndef MAX
+#define MAX(a, b) ((a)>(b)?(a):(b))
+#endif 
+
 extern  size_t strnlen(const char *_Str, size_t _MaxCount);
 
 #define RETURN_TYPE char *

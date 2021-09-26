@@ -4,6 +4,11 @@
 #include <time.h>
 #include <string.h>
 
+/* 最好在 linux 下测试 */
+#if !defined(__linux__)
+    #warning only linux operating system is supported 
+#endif
+
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 typedef char* (*FUNC)(const char *hay, const char *needle);
@@ -73,7 +78,7 @@ static void print(INFO *info, size_t size) {
     size_t i;
     if (NULL == info || size <= 0) return;
     for (i = 0; i < size; i++)
-        printf("%8s%28s%16ld%16ld\n", info[i].funcName, info[i].needle, info[i].count, info[i].clock);
+        printf("%8s%28s%16zu%16ld\n", info[i].funcName, info[i].needle, info[i].count, info[i].clock);
     printf("--------------------------------------------------------------------\n");
 }
 
@@ -99,7 +104,7 @@ static char *load(int argc, char *argv[], size_t *len) {
     /* 分配内存，并初始化为'\0'，多分配一个'\0'作为结束标志 */
     buffer = (char *)calloc(fileLen + 1, sizeof(char));
     if (NULL == buffer) {
-        printf("malloc buffer error! file:%s size:%lu\n", fileName, fileLen);
+        printf("malloc buffer error! file:%s size:%zu\n", fileName, fileLen);
         fclose(file);
         return NULL;
     }
@@ -113,7 +118,7 @@ static char *load(int argc, char *argv[], size_t *len) {
         return NULL;
     }
 
-    printf(" load %s ok! %lu bytes\n", fileName, fileLen);
+    printf(" load %s ok! %zu bytes\n", fileName, fileLen);
 
     fclose(file);
     *len = fileLen;
